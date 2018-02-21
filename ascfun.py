@@ -47,28 +47,3 @@ txt output text string
     data_string = ''.join(chr(c) for c in dec) # Converting decimal value to ASCII for each element in the array
     return data_string # string returned
 	
-	
-	
-#Flat-Top PAM
-	
-	
-N = len(dn) # Total number of bits
-Tb = 1/float(Fb) # Time per bit
-ixL = round(-1/2*Fs*Tb) # Left index for time axis
-ixR = round((N-0.5)*Fs*Tb) # Right index for time axis
-tt = arange(ixL,ixR)/float(Fs) # Time axis for s(t)
-td = arange(0,len(dn))/float(Fb) # Time axis for dn (integer multiples of bit period)
-rdt = diff(hstack((0,dn)))*Fs     # Derivative of dn
-rdt_up = [0]*len(tt)      # Initializing rdt_up with zeros 
-up_sample_factor = int(Fs/Fb) # Up sampling factor
-for index in arange(len(dn)): # for loop to place the differential output at multiples of Tb ,i.e., after up_sample_factor number of samples 
-    rdt_up[index*up_sample_factor] = rdt[index]
-st = cumsum(rdt_up)/float (Fs)     # Integral of rdt
-get_ipython().magic('matplotlib inline')
-plot(tt,st,'-b',td,dn,'*r')
-grid()
-xlabel('Time(in sec)')
-ylabel('Amplitude')
-axis([-0.05,0.35,-0.5,1.5])
-title('Unipolar Flat-Top PAM for 10 bit random sequence, Fb = 100 bits/sec')
-
